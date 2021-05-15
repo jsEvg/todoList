@@ -102,6 +102,9 @@ class ToDoList {
 
     
     sort() {
+        // 1. Получим массив не с пустыми значениями
+
+        // 2. Полчим массив с пустыми значениями
 
         this.list = this.list.sort((task1, task2) => {
             let value1 = task1.firstElementChild.value;
@@ -119,7 +122,7 @@ class ToDoList {
             this.list.reverse();
         }
 
-
+        // Соединяем отсортированный и массив с пустыми значениями
         this.updateList();
     }
 

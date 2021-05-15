@@ -2,7 +2,7 @@ class ToDoList {
     constructor(task) {
         this.list = [...task];
         this.countTask = this.list.length + 1;
-        this.sortDirection = 0;
+        this.sortDirection = 1;
     }
 
     init() {
@@ -10,12 +10,12 @@ class ToDoList {
         this.setEventListenerForSort();
         document.querySelectorAll('.task__img').forEach((element) => {
             this.setEventListenerForRemove(element);
-        });      
+        });
         // console.log(this.list);
     }
 
 
-     setEventListenerForButton() {
+    setEventListenerForButton() {
         let button = document.querySelector('.button');
         button.addEventListener('click', (event) => {
             let input = document.querySelector('.task__input');
@@ -44,8 +44,8 @@ class ToDoList {
             sort.src = this.sortDirection === 1 ? 'images/4.svg' : 'images/2.svg';
         });
     }
- 
-    
+
+
     setEventListenerForRemove(item) {
 
         item.addEventListener('mouseover', () => {
@@ -61,7 +61,7 @@ class ToDoList {
         });
     }
 
- 
+
     addTask(valueTask) {
         let div = document.createElement('div');
         div.classList.add('task');
@@ -80,49 +80,52 @@ class ToDoList {
         div.append(img);
 
         this.list.push(div);
-        this.countTask ++;
+        this.countTask++;
 
         this.updateList();
     }
-    
-   
+
+
     removeTask(element) {
-        
-        if (this.list.length !== 1){
+
+        if (this.list.length !== 1) {
             this.list = this.list.filter((item) => {
                 return item.firstElementChild.name !== element;
             });
         } else {
             this.list[0].firstElementChild.value = '';
         }
-        
-      
+
+
         this.updateList();
     }
 
-    
+
     sort() {
-        // 1. Получим массив не с пустыми значениями
 
-        // 2. Полчим массив с пустыми значениями
+        let listEmpty = this.list.filter(el => el.firstElementChild.value === '')
 
-        this.list = this.list.sort((task1, task2) => {
-            let value1 = task1.firstElementChild.value;
-            let value2 = task2.firstElementChild.value;
+        let sorted = this.list
+            .filter(el => el.firstElementChild.value !== '')
+            .sort((task1, task2) => {
+                let value1 = task1.firstElementChild.value;
+                let value2 = task2.firstElementChild.value;
 
-            if (value2 > value1) {
-                return -1;
-            } else {
-                return 1;
-            }
-        });
+                if (value2 > value1) {
+                    return 0;
+                } else {
+                    return 1;
+                }
+            });
 
 
         if (this.sortDirection === 1) {
-            this.list.reverse();
+            sorted.reverse();
         }
 
-        // Соединяем отсортированный и массив с пустыми значениями
+        this.list = listEmpty.concat(sorted);
+
+        this.list.forEach(el => console.log(el.firstElementChild.value));
         this.updateList();
     }
 
@@ -130,7 +133,7 @@ class ToDoList {
     updateList() {
 
         let newInputField = document.querySelector('.input-field');
-        newInputField.innerHTML = '';     
+        newInputField.innerHTML = '';
 
 
         this.list.forEach((element) => {
